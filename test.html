@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+</head>
+
+<body>
+    <!-- <iframe id="player" src="https://www.youtube.com/embed/M7lc1UVf-VE?enablejsapi=1"></iframe> -->
+    <div id="player"></div>
+
+    <script>
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: 'M7lc1UVf-VE',
+                playerVars: {
+                    //'autoplay': 1,
+                    'mute': 1
+
+                },
+                events: {
+                    'onReady': function(e) {
+                        console.log(e.target);
+                        //e.target.playVideo();
+                        setTimeout(onPlayerReady(e), 1000)
+                    },
+                    'onStateChange': function(e) {
+                        //e.target.unMute();
+                        setTimeout(onPlayerStateChange(e), 10000)
+                    }
+                }
+            });
+        }
+
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            event.target.playVideo();
+            //event.target.unMute();
+        }
+
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+
+        function onPlayerStateChange(event) {
+            console.log("unmuting");
+            event.target.unMute();
+            // if (event.data == YT.PlayerState.PLAYING && !done) {
+            //     setTimeout(stopVideo, 6000);
+            //     done = true;
+            // }
+        }
+
+        function stopVideo() {
+            player.stopVideo();
+        }
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+
+</html>
